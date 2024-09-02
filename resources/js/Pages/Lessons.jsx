@@ -66,6 +66,8 @@ export default function Lessons({ auth }) {
         .then((res) => {
           if(res.data.success){
             alert(res.data.message)
+          }else{
+            alert("Could not create lesson. Please try again!")
           }
           setDeleting(false);
           setTimestamp(Date.now())
@@ -179,34 +181,34 @@ export default function Lessons({ auth }) {
                             Add Lesson
                         </h1>
                         <form onSubmit={createLesson}>
-                            <div className="mb-3 p-1 flex items-center  gap-1 space-x-1">
-                                <div className="w-1/2">
-                                    <label>Title</label>
-                                    <TextInput
-                                        name="title"
-                                        className=""
-                                        required
-                                    />
-                                </div>
-
-                                <div className="w-1/2">
-                                    <label>Content(video)</label>
-                                    <input
-                                        type='file'
-                                        name="content"
-                                        className="w-full py-[4px] focus:outline-0 focus:ring-0  focus:bg-white focus:shadow-lg px-5 rounded-md border border-slate-300"
-                                        required
-                                    />
-                                </div>       
-
+                           
+                            <div className="w-full mb-3">
+                                <label>Title</label>
+                                <TextInput
+                                    name="title"
+                                    className=""
+                                    required
+                                />
                             </div>
+
+                            <div className="w-full mb-3">
+                                <label>Content(video)</label>
+                                <input
+                                    type='file'
+                                    name="content"
+                                    className="w-full py-[4px] focus:outline-0 focus:ring-0  focus:bg-white focus:shadow-lg px-5 rounded-md border border-slate-300"
+                                    required
+                                />
+                            </div>       
+
+                           
 
                             <div className='mb-3'>
                                 <label>Description (Optional)</label>
                                 <textarea
                                     name="description"
                                     className="block w-full py-2 px-5 rounded-md border-1 border-slate-300 bg-transparent placeholder:text-xs placeholder:font-medium text-slate-900 transition-all duration-300  focus:outline-0 focus:ring-0  focus:bg-white focus:shadow-lg"
-                                    required
+                                  
                                 />
                             </div>
 

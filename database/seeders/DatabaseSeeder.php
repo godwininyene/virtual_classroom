@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
             'last_name'=>'Izuchukwu',
             'email' => 'admin@virtualclassroom.com',
             'password' => Hash::make('12345678'),
-            'role' => 'admin'
+            'role' => 'teacher'
         ]);
 
         

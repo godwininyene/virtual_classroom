@@ -10,15 +10,14 @@ import Select from '@/Components/Select';
 import { useState } from 'react';
 import Spinner from '@/Components/Spinner';
 
-export default function AddStudent({ auth }) {
+export default function EditStudent({ auth, student }) {
     const [processing, setProcessing] = useState(false);
-
-    let createStudent = async (e) => {
+    let editStudent = async (e) => {
         e.preventDefault();
         setProcessing(true);
        
         let form = new FormData(e.target);
-        await axios.post(route('api.students'), form)
+        await axios.post(route('api.students.update'), form)
         .then((res) => {
             if(res.data.success){
                 alert(res.data.message)
@@ -28,14 +27,13 @@ export default function AddStudent({ auth }) {
         })
         .catch((err) => {
           setProcessing(false);
-          alert('Could not add new student. Please try again!')
           console.log(err);
         });
     }
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Dashboard</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Edit Student</h2>}
         >
             <Head title="Dashboard" />
 
@@ -57,11 +55,12 @@ export default function AddStudent({ auth }) {
                             {/* Form  Start */}
                             <div className="rounded-lg bg-white dark:bg-slate-800   overflow-x-auto shadow-sm shadow-white">
                                 <h2 className="px-4 py-2 border-b font-semibold flex justify-between items-center">
-                                    <span className="flex gap-2 items-center"> <FaChildren className="w-6 h-6 inline-block" />Add New Student</span>
+                                    <span className="flex gap-2 items-center"> <FaChildren className="w-6 h-6 inline-block" />Edit Student</span>
                                 </h2>
 
                                 <div className='max-w-5xl mx-auto'>
-                                    <form className='p-5' onSubmit={createStudent}>
+                                    <form className='p-5' onSubmit={editStudent}>
+                                        <input type="hidden" name="student_id" defaultValue={student.id} />
                                         <h1 className='italic font-medium mb-2'>Student's Information</h1>
 
                                         <div className="mb-3 p-1 flex items-center  gap-1 space-x-1">
@@ -70,7 +69,7 @@ export default function AddStudent({ auth }) {
                                                 <TextInput
                                                     name="first_name"
                                                     className=""
-                                                    required
+                                                    defaultValue={student.first_name || ''}
                                                 />
                                             </div>
 
@@ -79,7 +78,7 @@ export default function AddStudent({ auth }) {
                                                 <TextInput
                                                     name="middle_name"
                                                     className=""
-                                                   
+                                                    defaultValue={student.middle_name || ''}
                                                 />
                                             </div>
 
@@ -88,7 +87,7 @@ export default function AddStudent({ auth }) {
                                                 <TextInput
                                                     name="surname"
                                                     className=""
-                                                    required
+                                                    defaultValue={student.surname || ''}
                                                 />
                                             </div>
 
@@ -100,7 +99,7 @@ export default function AddStudent({ auth }) {
                                                 <TextInput
                                                     name="reg_number"
                                                     className=""
-                                                    required
+                                                    defaultValue={student.reg_number || ''}
                                                 />
                                             </div>
 
@@ -110,7 +109,7 @@ export default function AddStudent({ auth }) {
                                                     type='date'
                                                     name="dob"
                                                     className=""
-                                                    required
+                                                    defaultValue={student.dob || ''}
                                                 />
                                             </div>
 
@@ -120,7 +119,7 @@ export default function AddStudent({ auth }) {
                                                     type='email'
                                                     name="email"
                                                     className=""
-                                                    required
+                                                    defaultValue={student.email || ''}
                                                 />
                                             </div>
 
@@ -132,7 +131,6 @@ export default function AddStudent({ auth }) {
                                                 <Select
                                                     name="gender"
                                                     className=""
-                                                    required
                                                 >
                                                      <option value="" defaultValue="selected">- Select -</option>
                                                     <option value="Male">Male</option>
@@ -146,7 +144,6 @@ export default function AddStudent({ auth }) {
                                                     type='file'
                                                     name="avatar"
                                                     className="w-full py-[4px] focus:outline-0 focus:ring-0  focus:bg-white focus:shadow-lg px-5 rounded-md border border-slate-300"
-                                                    required
                                                 />
                                             </div>
 
@@ -156,7 +153,6 @@ export default function AddStudent({ auth }) {
                                                     type='password'
                                                     name="password"
                                                     className=""
-                                                    required
                                                 />
                                             </div>
 
@@ -169,6 +165,7 @@ export default function AddStudent({ auth }) {
                                                     name="address"
                                                     className="block w-full py-2 px-5 rounded-md border-1 border-slate-300 bg-transparent placeholder:text-xs placeholder:font-medium text-slate-900 transition-all duration-300  focus:outline-0 focus:ring-0  focus:bg-white focus:shadow-lg"
                                                     required
+                                                    defaultValue={student.address || ''}
                                                 />
                                             </div>
                                         </div>
@@ -181,7 +178,7 @@ export default function AddStudent({ auth }) {
                                                 <TextInput
                                                     name="parent_fullname"
                                                     className=""
-                                                    required
+                                                    defaultValue={student.parent_fullname || ''}
                                                 />
                                             </div>
 
@@ -191,7 +188,7 @@ export default function AddStudent({ auth }) {
                                                     type='number'
                                                     name="parent_phone"
                                                     className=""
-                                                    required
+                                                    defaultValue={student.parent_phone || ''}
                                                 />
                                             </div>
 
@@ -201,7 +198,7 @@ export default function AddStudent({ auth }) {
                                                     type="email"
                                                     name="parent_email"
                                                     className=""
-                                                    required
+                                                    defaultValue={student.parent_email || ''}
                                                 />
                                             </div>
 
@@ -214,7 +211,6 @@ export default function AddStudent({ auth }) {
                                                 <Select
                                                     name="parent_relationship"
                                                     className=""
-                                                    required
                                                 >
                                                     <option value="" defaultValue="selected">- Select -</option>
                                                     <option value="Parent">Parent</option>
@@ -228,9 +224,8 @@ export default function AddStudent({ auth }) {
 
                                         <div className="mb-3 p-1  text-end">
                                             <button className="bg-green-700 inline-flex items-center gap-2 text-white text-xs font-semibold py-3 px-5 rounded-full">
-                                               
                                                 {processing ? <Spinner size={5} />  :  <FaPlus className="h-4 inline-block" /> }
-                                               Add Student
+                                                Save Changes
                                             </button>
 
                                         </div>

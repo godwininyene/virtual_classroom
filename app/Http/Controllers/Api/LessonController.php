@@ -19,7 +19,7 @@ class LessonController extends Controller
         $newLesson->description = $request->description;
         
         if ($request->hasFile('content')) {
-            $imageUpload = ImageUploader::uploadFile($request->file('content'), 'lessons/videos');
+            $imageUpload = ImageUploader::uploadFile($request->file('content'), 'lessons');
             if ($imageUpload['status']) {
                 $newLesson->content = $imageUpload['path'] . $imageUpload['name'];
             }
@@ -63,7 +63,7 @@ class LessonController extends Controller
         $delete = $lesson->delete();
 
         if(!$delete){
-            return $this->sendError("Could not delete event due to an uneexpected error.", [], 500);
+            return $this->sendError("Could not delete lesson due to an uneexpected error.", [], 500);
         }
 
         $lessons = Lesson::orderBy('id', 'DESC')->get();

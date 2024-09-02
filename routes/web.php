@@ -15,17 +15,17 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [PageController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     // Teacher Routes
     Route::get('/students', [PageController::class, 'students'])->name("students");
     Route::get('/add_student', [PageController::class, 'addStudent'])->name("add_student");
+    Route::get('/edit_student', [PageController::class, 'editStudent'])->name("edit_student");
     Route::get('/parents', [PageController::class, 'parents'])->name("parents");
     Route::get('/lessons', [PageController::class, 'lessons'])->name("lessons");
     Route::get('/activities', [PageController::class, 'activities'])->name("activities");
+    Route::get('/progress', [PageController::class, 'progress'])->name("progress");
   
 
     // Profile Routes

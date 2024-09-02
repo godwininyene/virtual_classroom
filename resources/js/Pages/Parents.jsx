@@ -27,7 +27,7 @@ export default function Parents({ auth }) {
     useEffect(()=>{
         getAllStudents();
     },[])
-    console.log(students)
+
     return (
         <AuthenticatedLayout
             user={auth.user}

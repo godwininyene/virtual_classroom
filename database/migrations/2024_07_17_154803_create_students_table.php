@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string("reg_number");
             $table->string("dob");
             $table->string("email");
-            $table->string("password");
             $table->string("avatar");
             $table->string("gender");
             $table->string("address");

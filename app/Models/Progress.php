@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Progress extends Model
 {
     use HasFactory;
-    protected $fillable = ['student_id', 'lesson_id', 'activity_id', 'score'];
+    protected $fillable = ['student_id', 'lesson_id', 'activity_id', 'score', 'answers'];
 
     public function student()
     {

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->string('type'); // e.g., 'quiz', 'video', 'game'
+            $table->string('type')->nullable(); // e.g., 'quiz', 'video', 'game', 'audio'
             $table->text('content'); // to store activity-specific content
             $table->foreignId('lesson_id')->constrained()->onDelete('cascade');
             $table->timestamps();

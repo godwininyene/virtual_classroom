@@ -1,18 +1,24 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 import { FaChildren, FaNotesMedical } from "react-icons/fa6";
+import { FaQuestionCircle, FaRegTimesCircle,FaTimesCircle, FaThumbsUp} from 'react-icons/fa';
 import { MdLocalActivity } from "react-icons/md";
 import { GiProgression } from "react-icons/gi";
 import {FaPlus} from 'react-icons/fa'
 import { BiEditAlt, BiTrashAlt } from 'react-icons/bi';
 import avatar from '@/Assets/img/user.png'
 import { useState, useEffect } from 'react';
+import Spinner from '@/Components/Spinner';
+import Modal from '@/Components/CustomModal';
 
 
 export default function Students({ auth }) {
     const[students, setStudents] = useState([]);
+    const[selectedStudent, setSelectedStudent] = useState(false);
+    const[deleteModal, setDeleteModal] = useState(false);
     const[deleting, setDeleting] = useState(false);
     const[ID, setId] = useState();
+    const[timestamp, setTimestamp] = useState(null);
 
     const getAllStudents = async()=>{
         await axios.get(route('api.students'))
@@ -26,8 +32,25 @@ export default function Students({ auth }) {
 
     useEffect(()=>{
         getAllStudents();
-    },[])
-    console.log(students)
+    },[timestamp])
+    const deleteStudent= async (student) => {
+        setDeleting(true);
+        setId(student.id);
+        await axios.delete(route('api.students', {student_id: student.id}))
+        .then((res) => {
+          if(res.data.success){
+            alert(res.data.message)
+          }
+          setDeleting(false);
+          setTimestamp(Date.now())
+          setDeleteModal(false);
+        })
+        .catch((err) => {
+          console.log(err)
+          setDeleting(false);
+          setDeleteModal(false);
+        });
+    }
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -75,7 +98,7 @@ export default function Students({ auth }) {
                                 
                                             students.length == 0?(
                                                 <tr className="even:bg-teal-50">
-                                                <td className="whitespace-nowrap border py-2 px-4" colSpan="7">
+                                                <td className="whitespace-nowrap border py-2 px-4" colSpan="9">
                                                     <div className="flex items-center justify-center gap-5 w-full py-4">
                                                     <span>No record available</span>
                                                     </div>
@@ -102,12 +125,14 @@ export default function Students({ auth }) {
                                                 <td className="px-3 py-2">{student.email}</td>
                                                 <td className="px-3 py-2">{student.address}</td>
                                                
-                                                <td className='px-3 py-2'>
+                                                <td className='px-3 py-2 flex items-center'>
                                                     <button className="py-1 px-2 text-blue-500">
+                                                       <Link href={`/edit_student?id=${student.id}`}>
                                                         <BiEditAlt  className="h-6 w-6"  />
+                                                       </Link>
                                                     </button>
-                                                    <button className="py-1 px-2 text-red-500">
-                                                        {(deleting && student.id == ID) ? <LoadingIndicator size={6} /> : <BiTrashAlt  className="h-6 w-6"  /> }
+                                                    <button className="py-1 px-2 text-red-500" onClick={()=> {setDeleteModal(true); setSelectedStudent(student)}}>
+                                                        {(deleting && student.id == ID) ? <Spinner size={6} /> : <BiTrashAlt  className="h-6 w-6"  /> }
                                                     </button>
                                                 </td>
                                             </tr>
@@ -123,6 +148,27 @@ export default function Students({ auth }) {
                     </div>
                 </div>
             </div>
+             {/* Delete Modal */}
+            <Modal show={deleteModal} onClose={() => setDeleteModal(false)} closeable={true} maxWidth='sm'>
+                <div className='py-3 px-4 text-center'>
+                    <div className='mb-4'>
+                    <FaQuestionCircle className="h-10 w-10 mx-auto text-primary" />
+                    </div>
+                    <h1 className="mb-4 text-base font-semibold">
+                        Are you sure you want to delete this student: <span className='font-bold'>{selectedStudent.first_name  + " " + selectedStudent.surname}</span>?
+                    </h1>
+                    <div className="flex gap-2 items-center justify-end">
+                        <button onClick={() => deleteStudent(selectedStudent)} className='bg-green-700 text-white py-1 px-3 rounded-md inline-flex items-center gap-1'>
+                        
+                            {deleting  ? <Spinner size={6} /> :<span>  <FaThumbsUp className='w-4 h-4 inline' /> Yes</span> }
+                        </button>
+                        <button onClick={() => setDeleteModal(false)} className='bg-red-500 text-white py-1 px-3 rounded-md inline-flex items-center gap-1'>
+                            <FaRegTimesCircle className='w-4 h-4 inline' /> Cancel
+                        </button>
+                    </div>
+                </div>
+            </Modal>
+
         </AuthenticatedLayout>
     );
 }
