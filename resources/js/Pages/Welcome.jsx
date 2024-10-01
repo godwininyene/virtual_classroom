@@ -26,7 +26,9 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                     </Link>
                                 </div>
                                 <h1 className={`text-sky-950 text-6xl font-black mb-4`}>
-                                    We Are Kindergarten & Childhood
+                                  
+                                    Great Kings and Queens School
+                                    {/* <span className='text-sm block'>We Are Kindergarten & Childhood</span> */}
                                    
                                 </h1>
                                 <p className={`text-sky-900 font-normal text-lg mb-7 leading-6`}>
