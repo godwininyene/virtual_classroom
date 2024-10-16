@@ -144,8 +144,8 @@ export default function Lessons({ auth }) {
                                 lessons && lessons.map((lesson, index)=>(
                                     <div key={lesson.id} className={`${(1 == 2) && 'border border-blue-500'} bg-white  overflow-hidden block enabled:bg-black  rounded-lg shadow-lg h-full transition-all duration-300 hover:-translate-y-2`}>
                                         <ul className="">
-                                            <div className='h-56'>
-                                                <video src={lesson.content} controls className='w-full h-full object-cover rounded-lg'></video>
+                                            <div className='w-full'>
+                                                <video src={lesson.content} controls className='w-full rounded-lg'></video>
                                             </div>
                                             <div className='py-2 px-4'>
                                                 <li className='font-semibold text-lg'>{lesson.title}</li>
